@@ -10,6 +10,7 @@ on:
       - "branch-dispositions.json"
       - "BRANCH_RECONCILIATION.md"
       - "scripts/check-branch-dispositions.py"
+      - "scripts/list-branch-prune-candidates.py"
       - ".github/workflows/branch-reconciliation.yml"
   push:
     branches:
@@ -19,6 +20,7 @@ on:
       - "branch-dispositions.json"
       - "BRANCH_RECONCILIATION.md"
       - "scripts/check-branch-dispositions.py"
+      - "scripts/list-branch-prune-candidates.py"
       - ".github/workflows/branch-reconciliation.yml"
 
 permissions:
@@ -43,3 +45,6 @@ jobs:
 
       - name: Enforce branch dispositions
         run: python3 scripts/check-branch-dispositions.py --open-prs "$RUNNER_TEMP/open-prs.json" --max-unregistered-pr-age-days 30
+
+      - name: Show conservative prune candidates
+        run: python3 scripts/list-branch-prune-candidates.py --open-prs "$RUNNER_TEMP/open-prs.json"
