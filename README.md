@@ -1,6 +1,8 @@
 # VanHub UK live data
 
-This repository is the canonical current-data source for the driver and town collections shown on VanHub UK. **Current CSV blobs on `main` are authoritative.** Do not select an older branch because its name or Git ahead count looks newer.
+This repository is the canonical current-data source for the **public driver and town directory representation** shown on VanHub UK. **Current CSV blobs on `main` are authoritative for that public directory representation.** Do not select an older branch because its name or Git ahead count looks newer.
+
+**Repository boundary:** authenticated driver accounts, activation, entitlements, billing and marketplace transaction state belong in `caldervanman-glitch/vanhub-marketplace`; VanChat conversational semantics/evaluation belong in `caldervanman-glitch/vanchat`. A signup may legitimately affect both the private Marketplace account state and this public directory representation, but do not make either one silently overwrite the other's authority.
 
 Before reusing or deleting a historical branch, read [`BRANCH_RECONCILIATION.md`](BRANCH_RECONCILIATION.md) and [`branch-dispositions.json`](branch-dispositions.json). The automated branch audit prevents closed/unclassified work, including stale open-PR work, from disappearing outside the current control plane.
 
@@ -25,4 +27,4 @@ This repository is currently public. Keep it limited to fields intentionally sui
 5. Add a missing town to the correct town CSV when the location is clear and the town data can be sourced safely.
 6. Validate the driver and town CSVs together before updating this repository.
 
-The inbox is the source of new signup evidence. These CSV files determine which drivers and towns are already live.
+The inbox is the source of new signup evidence. These CSV files determine which drivers and towns are already live in the public directory; they do not define private account, entitlement or billing truth.
