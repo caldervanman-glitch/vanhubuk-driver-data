@@ -2,7 +2,7 @@
   "schema_version": 1,
   "canonical_branch": "main",
   "last_reconciled": "2026-09-10",
-  "policy": "Every remote historical branch must be registered unless it is the head of an open PR. Current CSV blobs on main, not branch age, determine live data authority.",
+  "policy": "Every remote historical branch must be registered unless it is the head of an open PR updated within 30 days; stale open PRs must be classified. Current CSV blobs on main, not branch age, determine live data authority.",
   "dispositions": {
     "data/add-london-towns-20260821": {
       "status": "SUPERSEDED",
