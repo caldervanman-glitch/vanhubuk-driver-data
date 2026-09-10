@@ -19,6 +19,10 @@ New driver/town data work starts from current `main`. An unregistered branch is 
 
 For data authority, compare the actual CSV blobs/content, not branch creation date, commit count or apparent “ahead” status. A divergent historical branch can contain an older driver roster even when Git reports unique commits.
 
+## Conservative pruning
+
+`scripts/list-branch-prune-candidates.py` is a dry-run aid only. It lists a branch only when the registry says `CONTAINED` **and** the branch is neither the head nor the base of an open PR. It never deletes anything and deliberately excludes `SUPERSEDED` or protected historical statuses. Re-run the full branch reconciliation immediately before any later manual deletion; branch deletion remains a separate explicit operation.
+
 ## Repository visibility/data boundary
 
 This repository is currently public. The present `Drivers.csv` is designed around public directory/profile fields and includes driver names and public contact numbers. Public repository history is nevertheless a stronger exposure boundary than a published profile page: every committed historical version remains accessible.
