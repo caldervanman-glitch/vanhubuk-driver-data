@@ -34,10 +34,10 @@ jobs:
       - name: Fetch every remote branch
         run: git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
 
-      - name: Record open PR heads and bases
+      - name: Record open PR heads, bases and freshness
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr list --state open --limit 100 --json number,headRefName,baseRefName > "$RUNNER_TEMP/open-prs.json"
+        run: gh pr list --state open --limit 100 --json number,headRefName,baseRefName,updatedAt,isDraft > "$RUNNER_TEMP/open-prs.json"
 
       - name: Enforce branch dispositions
-        run: python3 scripts/check-branch-dispositions.py --open-prs "$RUNNER_TEMP/open-prs.json"
+        run: python3 scripts/check-branch-dispositions.py --open-prs "$RUNNER_TEMP/open-prs.json" --max-unregistered-pr-age-days 30
