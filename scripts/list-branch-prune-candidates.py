@@ -52,6 +52,8 @@ def main() -> int:
         record = dispositions.get(branch)
         if not isinstance(record, dict) or record.get("status") != "CONTAINED":
             continue
+        if record.get("protect_reason"):
+            continue
         if branch in protected_by_pr:
             continue
         candidates.append(branch)
