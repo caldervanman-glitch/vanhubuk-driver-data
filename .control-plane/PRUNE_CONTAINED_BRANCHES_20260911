@@ -1,1 +1,3 @@
 Authorized 2026-09-11 conservative branch prune. Delete only refs proven contained in main and unused by open PRs. Retain superseded and other potentially reusable history.
+
+Trigger: workflow is now present on main; execute authorised prune.
