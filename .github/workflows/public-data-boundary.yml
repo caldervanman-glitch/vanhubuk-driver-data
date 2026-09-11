@@ -1,0 +1,31 @@
+name: Public data boundary
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "**/*.csv"
+      - "**/*.json"
+      - "**/*.jsonl"
+      - "scripts/check-public-data-boundary.py"
+      - ".github/workflows/public-data-boundary.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.csv"
+      - "**/*.json"
+      - "**/*.jsonl"
+      - "scripts/check-public-data-boundary.py"
+      - ".github/workflows/public-data-boundary.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check-public-data-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject private operational data structures
+        run: python3 scripts/check-public-data-boundary.py
