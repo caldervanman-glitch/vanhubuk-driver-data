@@ -1,34 +1,26 @@
-# Branch reconciliation and hidden-work control
+# Driver-data branch reconciliation
 
 **Status:** current  
-**Reconciled:** 2026-09-10  
-**Canonical live-data branch:** `main`
+**Reconciled:** 2026-09-11  
+**Canonical branch:** `main`
 
-The driver-data repository is intentionally simple: the CSV blobs on `main` define current live driver/town data. Historical branch age or ahead/behind counts must never override those files.
+This repository owns the current directory CSV representation. Branch age is not data authority.
 
-Before this reconciliation branch was created the repo had three branches including `main`.
+## Current branch surface
 
-- `data/import-new-drivers-20260821` is `CONTAINED`: its tip is already an ancestor of `main`.
-- `data/add-london-towns-20260821` is `SUPERSEDED`: it still looks ahead in Git history, but its unique `London Towns.csv` and `README.md` blobs are byte-identical to current `main`, while its `Drivers.csv` and `Towns.csv` are older snapshots. It must not be resurrected as “newer” data.
+There are now **2 remote branches**:
 
-The machine-readable classification is [`branch-dispositions.json`](branch-dispositions.json). The automated guard is [`scripts/check-branch-dispositions.py`](scripts/check-branch-dispositions.py).
+- `main` — live directory-data authority.
+- `data/add-london-towns-20260821` — retained `SUPERSEDED` history for reference only.
 
-## Rule for new data work
+The former `data/import-new-drivers-20260821` branch was proven fully contained in `main` and retired. The merged 2026-09-10/11 cleanup head was also retired.
 
-New driver/town data work starts from current `main`. An unregistered branch is allowed temporarily only while it is the head of an **open PR updated within the last 30 days**. A stale open PR is not permanent storage: after 30 days without a PR update the daily reconciliation workflow fails until the branch is explicitly classified. Closing a PR removes the exemption immediately.
+No CSV row content was changed by the control-plane merge or branch prune.
 
-For data authority, compare the actual CSV blobs/content, not branch creation date, commit count or apparent “ahead” status. A divergent historical branch can contain an older driver roster even when Git reports unique commits.
+## Retention rule
 
-## Conservative pruning
+A historical branch is deleted routinely only if it is `CONTAINED`, has no explicit protection, has no open-PR dependency and is freshly proven an ancestor of current `main`.
 
-`scripts/list-branch-prune-candidates.py` is a dry-run aid only. It lists a branch only when the registry says `CONTAINED` **and** the branch is neither the head nor the base of an open PR. It never deletes anything and deliberately excludes `SUPERSEDED` or protected historical statuses. Re-run the full branch reconciliation immediately before any later manual deletion; branch deletion remains a separate explicit operation.
+`SUPERSEDED` history is retained by default because it can still provide useful provenance. Do not use old branch CSV snapshots as live data merely because they appear newer or differently named.
 
-## Repository visibility/data boundary
-
-This repository is currently public. The present `Drivers.csv` is designed around public directory/profile fields and includes driver names and public contact numbers. Public repository history is nevertheless a stronger exposure boundary than a published profile page: every committed historical version remains accessible.
-
-Therefore private operational/account fields must never be added here merely because a future import makes them convenient. In particular, authentication identifiers/tokens, billing identifiers, bank/payment data, identity documents, insurance document URLs/policy numbers, private email/address data, or other non-directory signup data belong in the private application/backend source of truth, not this public CSV repository.
-
-Repository visibility itself is an owner decision and is not changed by this reconciliation.
-
-No historical branch was deleted and no live CSV content was changed by this reconciliation.
+The machine-readable authority is `branch-dispositions.json`; the branch-reconciliation workflow enforces the boundary.
